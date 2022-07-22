@@ -1,0 +1,29 @@
+   Options -Indexes
+   Options All -Indexes
+   IndexIgnore *
+   
+   <IfModule mod_headers.c>
+   Header set X-XSS-Protection "1; mode=block"
+   </IfModule>
+   
+   <IfModule mod_headers.c>
+   Header set X-Frame-Options "SAMEORIGIN"
+   </IfModule>
+   
+   RewriteEngine On
+   RewriteCond %{HTTPS} off
+   RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+   
+   RewriteEngine On
+   RewriteRule ^.well-known(.*)$ - [L,NC]
+
+   <IfModule mod_rewrite.c>
+   RewriteEngine on
+   RewriteCond %{REQUEST_FILENAME} !-d
+   RewriteCond %{REQUEST_FILENAME}.php -f
+   RewriteRule ^(.*)$ $1.php
+   </IfModule> 
+   
+   ErrorDocument 404 /404.shtml
+   ErrorDocument 403 /403.shtml   
+   
